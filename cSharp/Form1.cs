@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace cSharp
@@ -83,52 +76,59 @@ namespace cSharp
             string[] sumSplit = calResult.Text.Split('+');
             double result = 0;
 
-            for (int i = 0; i < sumSplit.Length; i++)
+            try
             {
-                string[] subSplit = sumSplit[i].Split('-');
-                double subSplitResult = 0;
-
-                for (int j = 0; j < subSplit.Length; j++)
+                for (int i = 0; i < sumSplit.Length; i++)
                 {
-                    string[] mulSplit = subSplit[j].Split('*');
-                    double mulSplitResult = 0;
+                    string[] subSplit = sumSplit[i].Split('-');
+                    double subSplitResult = 0;
 
-                    for (int k = 0; k < mulSplit.Length; k++)
+                    for (int j = 0; j < subSplit.Length; j++)
                     {
-                        string[] divSplit = mulSplit[k].Split('/');
-                        double divSplitResult = 0;
+                        string[] mulSplit = subSplit[j].Split('*');
+                        double mulSplitResult = 0;
 
-                        for (int l = 0; l < divSplit.Length; l++)
+                        for (int k = 0; k < mulSplit.Length; k++)
                         {
-                            if (l == 0)
-                                divSplitResult += Convert.ToDouble(divSplit[l]);
+                            string[] divSplit = mulSplit[k].Split('/');
+                            double divSplitResult = 0;
+
+                            for (int l = 0; l < divSplit.Length; l++)
+                            {
+                                if (l == 0)
+                                    divSplitResult += Convert.ToDouble(divSplit[l]);
+                                else
+                                    divSplitResult /= Convert.ToDouble(divSplit[l]);
+                            }
+
+                            mulSplit[k] = divSplitResult.ToString();
+
+                            if (k == 0)
+                                mulSplitResult += Convert.ToDouble(mulSplit[k]);
                             else
-                                divSplitResult /= Convert.ToDouble(divSplit[l]);
+                                mulSplitResult *= Convert.ToDouble(mulSplit[k]);
                         }
 
-                        mulSplit[k] = divSplitResult.ToString();
+                        subSplit[j] = mulSplitResult.ToString();
 
-                        if (k == 0)
-                            mulSplitResult += Convert.ToDouble(mulSplit[k]);
+                        if (j == 0)
+                            subSplitResult += Convert.ToDouble(subSplit[j]);
                         else
-                            mulSplitResult *= Convert.ToDouble(mulSplit[k]);
+                            subSplitResult -= Convert.ToDouble(subSplit[j]);
                     }
 
-                    subSplit[j] = mulSplitResult.ToString();
+                    sumSplit[i] = subSplitResult.ToString();
 
-                    if (j == 0)
-                        subSplitResult += Convert.ToDouble(subSplit[j]);
-                    else
-                        subSplitResult -= Convert.ToDouble(subSplit[j]);
+
+                    result += Convert.ToDouble(sumSplit[i]);
                 }
 
-                sumSplit[i] = subSplitResult.ToString();
-
-
-                result += Convert.ToDouble(sumSplit[i]);
+                calResult.Text = result.ToString();
             }
-
-            calResult.Text = result.ToString();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         private void clear_btn(object sender, EventArgs e)
         {
@@ -281,10 +281,19 @@ namespace cSharp
 
         public void test_key(object sender, KeyEventArgs e)
         {
-            void cal_btn()
+            char[] textbox = calResult.Text.ToCharArray();
+            string[] numArr = new string[100];
+            string[] operatorArr = new string[100];
+            int j = 0;
+            int k = 0;
+
+            char chars;
+
+            /*void cal_btn()
             {
                 string[] sumSplit = calResult.Text.Split('+');
                 double result = 0;
+
 
                 for (int i = 0; i < sumSplit.Length; i++)
                 {
@@ -332,11 +341,41 @@ namespace cSharp
                 }
 
                 calResult.Text = result.ToString();
+            }*/
+
+
+            void cal_btn_modify()
+            {
+                for (int i = 0;textbox.Length>i;i++)
+                {
+                    chars = textbox[i];
+
+                    if ( (chars == '+' || chars == '-' || chars == '/' || chars == '*') || (textbox.Length == i) )
+                    {             
+                        numArr[j] = calResult.Text.Substring(k, i);
+                        j += 1;
+                        k = i+1;
+                    }
+                }
+
+                for (int i = 0; i < numArr.Length;i++)
+                    Console.WriteLine(numArr[i]);
             }
+
             switch (e.KeyCode)
             {
                 case Keys.Enter:
-                    cal_btn();
+
+                    try
+                    {
+                        cal_btn_modify();
+                        //cal_btn();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "잘못된 수식입니다.");
+                    }
+
                     break;
             }
         }
