@@ -60,7 +60,7 @@
             // 
             // calResult
             // 
-            this.calResult.Location = new System.Drawing.Point(33, 41);
+            this.calResult.Location = new System.Drawing.Point(33, 40);
             this.calResult.Name = "calResult";
             this.calResult.Size = new System.Drawing.Size(258, 21);
             this.calResult.TabIndex = 3;

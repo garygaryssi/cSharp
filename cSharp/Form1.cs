@@ -73,63 +73,89 @@ namespace cSharp
         }
         public void cal_btn(object sender, EventArgs e)
         {
-            string[] sumSplit = calResult.Text.Split('+');
-            double result = 0;
+            char[] textbox = calResult.Text.ToCharArray();
+            double[] arrNum = new double[100];
+            char[] arrOper = new char[100];
+            int numCnt = 0;
+            int opCnt = 0;
+            int idx = 0;
+            bool contNum = false;
 
-            try
+
+            for (int i = 0; i < textbox.Length; i++)
             {
-                for (int i = 0; i < sumSplit.Length; i++)
+                if ((textbox[i] >= '0') && (textbox[i] <= '9'))
                 {
-                    string[] subSplit = sumSplit[i].Split('-');
-                    double subSplitResult = 0;
+                    if (contNum)
+                        arrNum[numCnt] = (arrNum[numCnt] * 10) + double.Parse(textbox[i].ToString());
+                    else
+                        arrNum[numCnt] = double.Parse(textbox[i].ToString());
 
-                    for (int j = 0; j < subSplit.Length; j++)
-                    {
-                        string[] mulSplit = subSplit[j].Split('*');
-                        double mulSplitResult = 0;
+                    contNum = true;
+                }
+                else
+                {
+                    numCnt++;
+                    arrOper[opCnt++] = textbox[i];
+                    contNum = false;
+                }
+            }
 
-                        for (int k = 0; k < mulSplit.Length; k++)
-                        {
-                            string[] divSplit = mulSplit[k].Split('/');
-                            double divSplitResult = 0;
+            for (int i = 0; i < arrOper.Length; i++)
+            {
+                if (arrOper[i] == '*' && arrOper[i + 1] == '-' && calResult.Text.Contains("*-"))
+                {
+                    arrNum[0] = -(arrNum[0] * arrNum[idx + 2]);
 
-                            for (int l = 0; l < divSplit.Length; l++)
-                            {
-                                if (l == 0)
-                                    divSplitResult += Convert.ToDouble(divSplit[l]);
-                                else
-                                    divSplitResult /= Convert.ToDouble(divSplit[l]);
-                            }
-
-                            mulSplit[k] = divSplitResult.ToString();
-
-                            if (k == 0)
-                                mulSplitResult += Convert.ToDouble(mulSplit[k]);
-                            else
-                                mulSplitResult *= Convert.ToDouble(mulSplit[k]);
-                        }
-
-                        subSplit[j] = mulSplitResult.ToString();
-
-                        if (j == 0)
-                            subSplitResult += Convert.ToDouble(subSplit[j]);
-                        else
-                            subSplitResult -= Convert.ToDouble(subSplit[j]);
-                    }
-
-                    sumSplit[i] = subSplitResult.ToString();
-
-
-                    result += Convert.ToDouble(sumSplit[i]);
+                    idx++;
+                    i++;
                 }
 
-                calResult.Text = result.ToString();
+                else if (arrOper[i] == '/' && arrOper[i + 1] == '-' && calResult.Text.Contains("/-"))
+                {
+                    arrNum[0] = -(arrNum[0] / arrNum[idx + 2]);
+
+                    idx++;
+                    i++;
+                }
+
+                else
+                {
+                    if (arrOper[i] == '+')
+                    {
+                        arrNum[0] = (arrNum[0] + arrNum[idx + 1]);
+
+                        idx++;
+                    }
+
+                    if (arrOper[i] == '-')
+                    {
+                        arrNum[0] = (arrNum[0] - arrNum[idx + 1]);
+
+                        idx++;
+                    }
+
+                    if (arrOper[i] == '*')
+                    {
+                        arrNum[0] = (arrNum[0] * arrNum[idx + 1]);
+
+                        idx++;
+                    }
+
+                    if (arrOper[i] == '/')
+                    {
+                        arrNum[0] = (arrNum[0] / arrNum[idx + 1]);
+
+                        idx++;
+                    }
+
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
+            calResult.Text = arrNum[0].ToString();
+
         }
+
         private void clear_btn(object sender, EventArgs e)
         {
             calResult.Text = null;
@@ -282,84 +308,106 @@ namespace cSharp
         public void test_key(object sender, KeyEventArgs e)
         {
             char[] textbox = calResult.Text.ToCharArray();
-            string[] numArr = new string[100];
-            string[] operatorArr = new string[100];
-            int j = 0;
-            int k = 0;
+            double[] arrNum = new double[10];
+            char[] arrOper = new char[10];
+            int numCnt = 0;
+            int opCnt = 0;
+            int idx = 0;
+            bool contNum = false;
 
-            char chars;
-
-            /*void cal_btn()
+            void parse()
             {
-                string[] sumSplit = calResult.Text.Split('+');
-                double result = 0;
-
-
-                for (int i = 0; i < sumSplit.Length; i++)
+                for (int i = 0; i < textbox.Length; i++)
                 {
-                    string[] subSplit = sumSplit[i].Split('-');
-                    double subSplitResult = 0;
-
-                    for (int j = 0; j < subSplit.Length; j++)
+                    if ((textbox[i] >= '0') && (textbox[i] <= '9'))
                     {
-                        string[] mulSplit = subSplit[j].Split('*');
-                        double mulSplitResult = 0;
+                        if (contNum)
+                            arrNum[numCnt] = (arrNum[numCnt] * 10) + double.Parse(textbox[i].ToString());
+                        else
+                            arrNum[numCnt] = double.Parse(textbox[i].ToString());
 
-                        for (int k = 0; k < mulSplit.Length; k++)
+                        contNum = true;
+                    }
+                    else
+                    {
+                        numCnt++;
+                        arrOper[opCnt++] = textbox[i];
+                        contNum = false;
+                    }
+                }
+            }
+
+            void cal()
+            {
+                for (int i = 0; i < arrOper.Length; i++)
+                {
+                    if (arrOper[i] == '*' && arrOper[i + 1] == '-' && calResult.Text.Contains("*-") )
+                    {
+                        arrNum[0] = - (arrNum[0] * arrNum[idx + 2]);
+
+                        idx++;
+                        i++;
+                    }
+
+                    else if (arrOper[i] == '/' && arrOper[i + 1] == '-' && calResult.Text.Contains("/-"))
+                    {
+                        arrNum[0] = - (arrNum[0] / arrNum[idx + 2]);
+
+                        idx++;
+                        i++;
+                    }
+
+                    else
+                    {
+                        if (arrOper[i] == '+')
                         {
-                            string[] divSplit = mulSplit[k].Split('/');
-                            double divSplitResult = 0;
+                            arrNum[0] = (arrNum[0] + arrNum[idx + 1]);
 
-                            for (int l = 0; l < divSplit.Length; l++)
-                            {
-                                if (l == 0)
-                                    divSplitResult += Convert.ToDouble(divSplit[l]);
-                                else
-                                    divSplitResult /= Convert.ToDouble(divSplit[l]);
-                            }
-
-                            mulSplit[k] = divSplitResult.ToString();
-
-                            if (k == 0)
-                                mulSplitResult += Convert.ToDouble(mulSplit[k]);
-                            else
-                                mulSplitResult *= Convert.ToDouble(mulSplit[k]);
+                            idx++;
                         }
 
-                        subSplit[j] = mulSplitResult.ToString();
+                        if (arrOper[i] == '-')
+                        {
+                            arrNum[0] = (arrNum[0] - arrNum[idx + 1]);
 
-                        if (j == 0)
-                            subSplitResult += Convert.ToDouble(subSplit[j]);
-                        else
-                            subSplitResult -= Convert.ToDouble(subSplit[j]);
+                            idx++;
+                        }
+
+                        if (arrOper[i] == '*')
+                        {
+                            arrNum[0] = (arrNum[0] * arrNum[idx + 1]);
+
+                            idx++;
+                        }
+
+                        if (arrOper[i] == '/')
+                        {
+                            arrNum[0] = (arrNum[0] / arrNum[idx + 1]);
+
+                            idx++;
+                        }
+
                     }
-
-                    sumSplit[i] = subSplitResult.ToString();
-
-
-                    result += Convert.ToDouble(sumSplit[i]);
                 }
 
-                calResult.Text = result.ToString();
-            }*/
+                calResult.Text = arrNum[0].ToString();
 
+            }
 
-            void cal_btn_modify()
+            void backSpace()
             {
-                for (int i = 0;textbox.Length>i;i++)
+                while (true)
                 {
-                    chars = textbox[i];
+                    string test = calResult.Text;
 
-                    if ( (chars == '+' || chars == '-' || chars == '/' || chars == '*') || (textbox.Length == i) )
-                    {             
-                        numArr[j] = calResult.Text.Substring(k, i);
-                        j += 1;
-                        k = i+1;
+                    if (test.Length > 0)
+                    {
+                        calResult.Text = test.Substring(0, test.Length - 1);
+                        break;
                     }
+                    else
+                        break;
                 }
-
-                for (int i = 0; i < numArr.Length;i++)
-                    Console.WriteLine(numArr[i]);
             }
 
             switch (e.KeyCode)
@@ -368,8 +416,9 @@ namespace cSharp
 
                     try
                     {
-                        cal_btn_modify();
-                        //cal_btn();
+                        parse();
+
+                        cal();
                     }
                     catch (Exception ex)
                     {
@@ -377,6 +426,13 @@ namespace cSharp
                     }
 
                     break;
+
+                case Keys.Back:
+
+                    backSpace();
+
+                    break;
+
             }
         }
     }
