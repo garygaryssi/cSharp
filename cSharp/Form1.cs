@@ -93,6 +93,15 @@ namespace cSharp
 
                     contNum = true;
                 }
+
+                else if (textbox[i] == '.')
+                {
+
+                    arrNum[numCnt] = (arrNum[numCnt] + (0.1f * float.Parse(textbox[i + 1].ToString())));
+                    i++;
+                    contNum = false;
+                }
+
                 else
                 {
                     numCnt++;
@@ -288,6 +297,16 @@ namespace cSharp
                 break;
             }
         }
+        private void button19_Click(object sender, EventArgs e)
+        {
+            tmp = ".";
+
+            while (true)
+            {
+                calResult.Text += tmp;
+                break;
+            }
+        }
 
         private void remove_btn(object sender, EventArgs e)
         {
@@ -308,7 +327,7 @@ namespace cSharp
         public void test_key(object sender, KeyEventArgs e)
         {
             char[] textbox = calResult.Text.ToCharArray();
-            double[] arrNum = new double[10];
+            float[] arrNum = new float[10];
             char[] arrOper = new char[10];
             int numCnt = 0;
             int opCnt = 0;
@@ -322,12 +341,26 @@ namespace cSharp
                     if ((textbox[i] >= '0') && (textbox[i] <= '9'))
                     {
                         if (contNum)
-                            arrNum[numCnt] = (arrNum[numCnt] * 10) + double.Parse(textbox[i].ToString());
+                            arrNum[numCnt] = (arrNum[numCnt] * 10) + float.Parse(textbox[i].ToString());
                         else
-                            arrNum[numCnt] = double.Parse(textbox[i].ToString());
+                            arrNum[numCnt] = float.Parse(textbox[i].ToString());
 
                         contNum = true;
                     }
+
+                    // 소수점 처리하기
+                    else if (textbox[i] == '.')
+                    {
+                        
+                        arrNum[numCnt] = ( arrNum[numCnt] + ( 0.1f * float.Parse(textbox[i+1].ToString()) ) );
+                        i++;
+
+                        if ((textbox[i + 1] >= '0') && (textbox[(i + 1)] <= '9'))
+                            contNum = true;
+                        else
+                            contNum = false;
+                    }
+
                     else
                     {
                         numCnt++;
@@ -351,7 +384,7 @@ namespace cSharp
 
                     else if (arrOper[i] == '/' && arrOper[i + 1] == '-' && calResult.Text.Contains("/-"))
                     {
-                        arrNum[0] = - (arrNum[0] / arrNum[idx + 2]);
+                        arrNum[0] = -(arrNum[0] / arrNum[idx + 2]);
 
                         idx++;
                         i++;
@@ -435,5 +468,6 @@ namespace cSharp
 
             }
         }
+
     }
 }
