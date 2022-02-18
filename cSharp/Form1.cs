@@ -332,18 +332,40 @@ namespace cSharp
             int numCnt = 0;
             int opCnt = 0;
             int idx = 0;
+            float param = 0.01f;
             bool contNum = false;
+            bool isCheck = false;
+            bool isFloat;
 
+            // 입력 test parse 하는 부분
             void parse()
             {
                 for (int i = 0; i < textbox.Length; i++)
                 {
+                    string check = arrNum[numCnt].ToString();
+
+                    if ( (check.Contains(".")) || (isCheck == true))
+                        isFloat = true;
+                    else
+                        isFloat = false;
+
                     if ((textbox[i] >= '0') && (textbox[i] <= '9'))
                     {
-                        if (contNum)
+                        if (contNum && isFloat == false)
+                        { 
                             arrNum[numCnt] = (arrNum[numCnt] * 10) + float.Parse(textbox[i].ToString());
+                        }
+
+                        else if (contNum && isFloat == true)
+                        {
+                            arrNum[numCnt] = (arrNum[numCnt]) + (param * float.Parse(textbox[i].ToString()));
+                            param = param * 0.1f;
+                        }
+
                         else
+                        { 
                             arrNum[numCnt] = float.Parse(textbox[i].ToString());
+                        }
 
                         contNum = true;
                     }
@@ -351,8 +373,12 @@ namespace cSharp
                     // 소수점 처리하기
                     else if (textbox[i] == '.')
                     {
-                        
-                        arrNum[numCnt] = ( arrNum[numCnt] + ( 0.1f * float.Parse(textbox[i+1].ToString()) ) );
+                        check += '.';
+                        if (textbox[i + 1] != '0')
+                            arrNum[numCnt] = (arrNum[numCnt]) + (0.1f * float.Parse(textbox[i + 1].ToString()));
+                        else
+                            isCheck = true;
+
                         i++;
 
                         if ((textbox[i + 1] >= '0') && (textbox[(i + 1)] <= '9'))
@@ -363,9 +389,11 @@ namespace cSharp
 
                     else
                     {
+                        param = 0.01f;
                         numCnt++;
                         arrOper[opCnt++] = textbox[i];
                         contNum = false;
+                        isCheck = false;
                     }
                 }
             }
