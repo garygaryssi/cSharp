@@ -74,39 +74,71 @@ namespace cSharp
         public void cal_btn(object sender, EventArgs e)
         {
             char[] textbox = calResult.Text.ToCharArray();
-            double[] arrNum = new double[100];
-            char[] arrOper = new char[100];
+            float[] arrNum = new float[10];
+            char[] arrOper = new char[10];
             int numCnt = 0;
             int opCnt = 0;
             int idx = 0;
+            float param = 0.01f;
             bool contNum = false;
+            bool isCheck = false;
+            bool isFloat;
 
 
             for (int i = 0; i < textbox.Length; i++)
             {
+                string check = arrNum[numCnt].ToString();
+
+                if ((check.Contains(".")) || (isCheck == true))
+                    isFloat = true;
+                else
+                    isFloat = false;
+
                 if ((textbox[i] >= '0') && (textbox[i] <= '9'))
                 {
-                    if (contNum)
-                        arrNum[numCnt] = (arrNum[numCnt] * 10) + double.Parse(textbox[i].ToString());
+                    if (contNum && isFloat == false)
+                    {
+                        arrNum[numCnt] = (arrNum[numCnt] * 10) + float.Parse(textbox[i].ToString());
+                    }
+
+                    else if (contNum && isFloat == true)
+                    {
+                        arrNum[numCnt] = (arrNum[numCnt]) + (param * float.Parse(textbox[i].ToString()));
+                        param = param * 0.1f;
+                    }
+
                     else
-                        arrNum[numCnt] = double.Parse(textbox[i].ToString());
+                    {
+                        arrNum[numCnt] = float.Parse(textbox[i].ToString());
+                    }
 
                     contNum = true;
                 }
 
+                // 소수점 처리하기
                 else if (textbox[i] == '.')
                 {
+                    check += '.';
+                    if (textbox[i + 1] != '0')
+                        arrNum[numCnt] = (arrNum[numCnt]) + (0.1f * float.Parse(textbox[i + 1].ToString()));
+                    else
+                        isCheck = true;
 
-                    arrNum[numCnt] = (arrNum[numCnt] + (0.1f * float.Parse(textbox[i + 1].ToString())));
                     i++;
-                    contNum = false;
+
+                    if ((textbox[i + 1] >= '0') && (textbox[(i + 1)] <= '9'))
+                        contNum = true;
+                    else
+                        contNum = false;
                 }
 
                 else
                 {
+                    param = 0.01f;
                     numCnt++;
                     arrOper[opCnt++] = textbox[i];
                     contNum = false;
+                    isCheck = false;
                 }
             }
 
