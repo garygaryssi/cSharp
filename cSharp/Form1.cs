@@ -119,6 +119,7 @@ namespace cSharp
                 else if (textbox[i] == '.')
                 {
                     check += '.';
+
                     if (textbox[i + 1] != '0')
                         arrNum[numCnt] = (arrNum[numCnt]) + (0.1f * float.Parse(textbox[i + 1].ToString()));
                     else
@@ -411,12 +412,13 @@ namespace cSharp
                         else
                             isCheck = true;
 
-                        i++;
 
                         if ((textbox[i + 1] >= '0') && (textbox[(i + 1)] <= '9'))
                             contNum = true;
                         else
                             contNum = false;
+
+                        i++;
                     }
 
                     else
