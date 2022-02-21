@@ -18,9 +18,12 @@ namespace cSharp
 
         }
 
-        private void sum_Click(object sender, EventArgs e)
+        // 버튼입력 
+        private void btnClick(object sender, EventArgs e)
         {
-            tmp = "+";
+            Button btn = (Button)sender;
+
+            tmp = btn.Text;
 
             while (true)
             {
@@ -30,41 +33,6 @@ namespace cSharp
             }
         }
 
-        private void sub_Click(object sender, EventArgs e)
-        {
-            tmp = "-";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-        }
-
-        private void div_Click(object sender, EventArgs e)
-        {
-            tmp = "/";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-        }
-
-        private void mul_Click(object sender, EventArgs e)
-        {
-            tmp = "*";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-        }
         public void cal_btn(object sender, EventArgs e)
         {
             char[] textbox = calResult.Text.ToCharArray();
@@ -191,151 +159,6 @@ namespace cSharp
             calResult.Text = arrNum[0].ToString();
 
         }
-
-        private void clear_btn(object sender, EventArgs e)
-        {
-            calResult.Text = null;
-        }
-
-        private void btnNum1_Click(object sender, EventArgs e)
-        {
-            tmp = "1";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-
-        }
-
-        private void btnNum2_Click(object sender, EventArgs e)
-        {
-            tmp = "2";
-
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-
-        }
-
-        private void btnNum3_Click(object sender, EventArgs e)
-        {
-            tmp = "3";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-
-        }
-
-        private void btnNum4_Click(object sender, EventArgs e)
-        {
-            tmp = "4";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-
-        }
-
-        private void btnNum5_Click(object sender, EventArgs e)
-        {
-            tmp = "5";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-
-        }
-
-        private void btnNum6_Click(object sender, EventArgs e)
-        {
-            tmp = "6";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-
-        }
-
-        private void btnNum7_Click(object sender, EventArgs e)
-        {
-            tmp = "7";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-
-                break;
-            }
-
-        }
-
-        private void btnNum8_Click(object sender, EventArgs e)
-        {
-            tmp = "8";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-                break;
-            }
-
-        }
-
-        private void btnNum9_Click(object sender, EventArgs e)
-        {
-            tmp = "9";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-                break;
-
-            }
-
-        }
-
-        private void btnNum0_Click(object sender, EventArgs e)
-        {
-            tmp = "0";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-                break;
-            }
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-            tmp = ".";
-
-            while (true)
-            {
-                calResult.Text += tmp;
-                break;
-            }
-        }
-
         private void remove_btn(object sender, EventArgs e)
         {
             while (true)
@@ -351,7 +174,10 @@ namespace cSharp
                     break;
             }
         }
-
+        private void clear_btn(object sender, EventArgs e)
+        {
+            calResult.Text = null;
+        }
         public void test_key(object sender, KeyEventArgs e)
         {
             char[] textbox = calResult.Text.ToCharArray();
