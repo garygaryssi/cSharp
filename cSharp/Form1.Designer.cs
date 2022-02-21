@@ -47,6 +47,7 @@
             this.button18 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.calResult = new System.Windows.Forms.TextBox();
+            this.result = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button2
@@ -231,18 +232,30 @@
             // 
             // calResult
             // 
-            this.calResult.Location = new System.Drawing.Point(26, 43);
+            this.calResult.Location = new System.Drawing.Point(26, 12);
             this.calResult.Name = "calResult";
             this.calResult.Size = new System.Drawing.Size(324, 21);
             this.calResult.TabIndex = 24;
             this.calResult.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.calResult.KeyDown += new System.Windows.Forms.KeyEventHandler(this.test_key);
             // 
+            // result
+            // 
+            this.result.BackColor = System.Drawing.SystemColors.Menu;
+            this.result.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.result.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.result.Location = new System.Drawing.Point(250, 39);
+            this.result.Name = "result";
+            this.result.Size = new System.Drawing.Size(100, 14);
+            this.result.TabIndex = 25;
+            this.result.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(375, 329);
+            this.Controls.Add(this.result);
             this.Controls.Add(this.calResult);
             this.Controls.Add(this.button19);
             this.Controls.Add(this.button18);
@@ -290,6 +303,7 @@
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.TextBox calResult;
+        private System.Windows.Forms.TextBox result;
     }
 }
 
