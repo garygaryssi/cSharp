@@ -10,13 +10,7 @@ namespace cSharp
         public Form1()
         {
             InitializeComponent();
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("계산기 예시입니다.");
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -125,12 +119,12 @@ namespace cSharp
                     else
                         isCheck = true;
 
-                    i++;
 
                     if ((textbox[i + 1] >= '0') && (textbox[(i + 1)] <= '9'))
                         contNum = true;
                     else
                         contNum = false;
+                    i++;
                 }
 
                 else
@@ -330,6 +324,7 @@ namespace cSharp
                 break;
             }
         }
+
         private void button19_Click(object sender, EventArgs e)
         {
             tmp = ".";
@@ -360,8 +355,8 @@ namespace cSharp
         public void test_key(object sender, KeyEventArgs e)
         {
             char[] textbox = calResult.Text.ToCharArray();
-            float[] arrNum = new float[10];
-            char[] arrOper = new char[10];
+            float[] arrNum = new float[100];
+            char[] arrOper = new char[100];
             int numCnt = 0;
             int opCnt = 0;
             int idx = 0;
@@ -530,6 +525,5 @@ namespace cSharp
 
             }
         }
-
     }
 }
